@@ -37,60 +37,62 @@ function makeBrief(state) {
 
 if (typeof module !== 'undefined' && module.exports) module.exports = {sources,getCard,getAnswer,initialWorkflow,transition,makeBrief};
 if (typeof document !== 'undefined') {
-  const content = document.getElementById('scene-content');
-  const dialog = document.getElementById('source-dialog');
-  const announcement = document.getElementById('announcement');
-  let scene = 'research', sourceId = 'pilot', cardCreated = false, question = 'findings';
-  let workflow = initialWorkflow(), downloadUrl = null;
-  const escape = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const announce = text => { announcement.textContent = text; };
-  const sourceButton = id => `<button type="button" class="source-button" data-source="${id}"><span aria-hidden="true">↗</span> ${id === 'pilot' ? '01 · Pilot note' : '02 · Review memo'}</button>`;
-  function releaseDownload() { if (downloadUrl) { URL.revokeObjectURL(downloadUrl); downloadUrl=null; } }
-  function researchView() {
-    const source = sources[sourceId], card = getCard(sourceId);
-    const output = cardCreated ? `<section class="panel card-output" aria-label="Structured knowledge card"><div class="panel-label"><span>KNOWLEDGE CARD</span><span class="sample-label">AI draft · sample</span></div><h4 class="card-title">${escape(card.title)}</h4>${[['WHY',card.why],['WHAT / HOW',card.what+' '+card.how],['FINDING',card.finding],['LIMITATIONS',card.limitations]].map(([label,text])=>`<div class="card-field"><span>${label}</span><p>${escape(text)}</p></div>`).join('')}<div class="card-tags">${card.tags.map(tag=>`<span>${tag}</span>`).join('')}</div><div class="source-links">${sourceButton(sourceId)}</div></section>` : `<div class="panel empty-card"><div class="empty-icon" aria-hidden="true">⌘</div><h4>A source, ready to reuse.</h4><p>Create a sample card to see the question,<br>finding and limitations kept together.</p></div>`;
-    return `<div class="scene-heading"><h3>Research to knowledge</h3><p>Choose a source, then turn it into a structured card. The original material stays one click away.</p></div><div class="choice-row" aria-label="Sample documents"><button type="button" class="choice ${sourceId==='pilot'?'selected':''}" data-document="pilot" aria-pressed="${sourceId==='pilot'}">01 · Pilot note</button><button type="button" class="choice ${sourceId==='review'?'selected':''}" data-document="review" aria-pressed="${sourceId==='review'}">02 · Review memo</button></div><div class="research-grid"><section class="panel" aria-label="Sample source"><div class="panel-label"><span>SOURCE MATERIAL</span><span class="sample-label">Fictional</span></div><h4>${escape(source.title)}</h4><p>${escape(source.excerpt)}</p><p class="source-note">${source.type}</p><button type="button" class="primary" data-action="card">${cardCreated?'Rebuild sample card':'Create knowledge card'} <span aria-hidden="true">↗</span></button></section>${output}</div>`;
-  }
-  function knowledgeView() {
-    const answer = getAnswer(question);
-    return `<div class="scene-heading"><h3>Answers with evidence</h3><p>Choose a question about the same sample materials. Inspect the sources, or try a question the evidence cannot answer.</p></div><div class="choice-row" aria-label="Sample questions">${[['findings','What did the pilot show?'],['rollout','What should happen next?'],['retention','Did it improve retention?']].map(([id,label])=>`<button type="button" class="choice ${question===id?'selected':''}" data-question="${id}" aria-pressed="${question===id}">${label}</button>`).join('')}</div><section class="panel answer-panel ${answer.supported?'':'gap-panel'}" aria-label="Sample answer"><span class="sample-label">${answer.supported?'Based on sample sources':'Evidence gap'}</span><h4>${escape(answer.title)}</h4><p>${escape(answer.text)}</p><p class="interpretation">${escape(answer.interpretation)}</p>${answer.sources.length?`<div class="source-links">${answer.sources.map(sourceButton).join('')}</div>`:''}</section><p class="knowledge-help">These responses are prewritten to demonstrate source-aware answering. No model is generating an answer here.</p>`;
-  }
-  function workflowView() {
-    releaseDownload();
-    if (workflow.approved) downloadUrl = URL.createObjectURL(new Blob([makeBrief(workflow)], {type:'text/plain;charset=utf-8'}));
-    return `<div class="scene-heading"><h3>Question to workflow</h3><p>Move from a request to a proposed plan. Review its basis before creating a sample deliverable.</p></div><div class="brief-request"><span>REQUEST</span><p>“Help me prepare a follow-up test of the support assistant.”</p></div><ol class="workflow-steps"><li class="current">01 · Draft a plan</li><li class="${workflow.drafted?'current':''}">02 · Review the evidence</li><li class="${workflow.approved?'current':''}">03 · Generate a brief</li></ol><section class="panel" aria-label="Reviewable workflow">${workflow.drafted?`<div class="panel-label"><span>PROPOSED DELIVERABLES</span><span class="sample-label">Sample plan</span></div><ul class="task-list"><li><span>01</span>Define routine categories and the exception path.</li><li><span>02</span>Set a baseline for reply quality and handling time.</li><li><span>03</span>Keep human review and record corrections.</li><li><span>04</span>Review the findings before an expansion decision.</li></ul><div class="source-links">${sourceButton('pilot')}${sourceButton('review')}</div><label class="review-label"><input type="checkbox" data-review="sources" ${workflow.sources?'checked':''}>I have reviewed the two fictional source notes.</label><label class="review-label"><input type="checkbox" data-review="limits" ${workflow.limits?'checked':''}>I understand that these sources do not establish a causal effect or a retention result.</label><div class="workflow-actions"><button type="button" class="primary" data-action="approve" ${!workflow.sources||!workflow.limits||workflow.approved?'disabled':''}>${workflow.approved?'Review completed':'Finish review & generate brief'} <span aria-hidden="true">↗</span></button>${workflow.approved?`<a class="download-link" href="${downloadUrl}" download="jimmyai-sample-brief.txt">Download sample brief <span aria-hidden="true">↓</span></a>`:''}</div><p class="workflow-hint ${workflow.approved?'approved-note':''}">${workflow.approved?'Your sample brief is ready. This approval exists only within the demo.':'Review both items to continue. Nothing is sent or executed.'}</p>`:`<div class="empty-card"><div class="empty-icon" aria-hidden="true">↳</div><h4>Make the next step explicit.</h4><p>See how one open request becomes<br>a small set of reviewable tasks.</p></div><button type="button" class="primary" data-action="draft">Build sample workflow <span aria-hidden="true">↗</span></button>`}</section>`;
-  }
-  function render() {
-    if (scene !== 'workflow') releaseDownload();
-    document.getElementById('breadcrumb').textContent = `Workspace / ${{research:'Research',knowledge:'Knowledge',workflow:'Workflow'}[scene]}`;
-    document.querySelectorAll('[data-scene]').forEach(button=>{const active=button.dataset.scene===scene;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
-    content.innerHTML = scene==='research'?researchView():scene==='knowledge'?knowledgeView():workflowView();
-  }
-  function focusSame(selector) { content.querySelector(selector)?.focus({preventScroll:true}); }
-  function openSource(id) {
-    const source=sources[id]; if (!source) return;
-    document.getElementById('source-title').textContent=source.title;
-    document.getElementById('source-meta').textContent=source.type;
-    document.getElementById('source-excerpt').textContent=source.excerpt;
+  const content=document.getElementById('scene-content'),dialog=document.getElementById('source-dialog'),announcement=document.getElementById('announcement');
+  let scene='research',cardCreated=false,question='findings',workflow=initialWorkflow(),downloadUrl=null;
+  const escape=value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const announce=text=>{announcement.textContent=text;};
+  const docIcon='<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+  const hub=small=>`<div class="hub-wrap ${small?'small-hub':''}" aria-hidden="true"><div class="hub-ring"></div><div class="hub">J<span class="spark">✦</span></div><span class="hub-label">JIMMYAI</span></div>`;
+  const wires=active=>`<svg class="wires" viewBox="0 0 1000 260" preserveAspectRatio="none" aria-hidden="true"><path class="wire" d="M160 70C330 70 315 130 480 130S680 130 840 130M160 190C330 190 315 130 480 130"/>${active?'<path class="wire-glow" d="M160 70C330 70 315 130 480 130S680 130 840 130M160 190C330 190 315 130 480 130"/>':''}</svg>`;
+  const sourceNode=(id,title,type)=>`<button type="button" class="source-node" data-source="${id}" aria-label="Read sample ${title}"><span class="doc-icon">${docIcon}</span><div><span class="node-name">${title}</span><span class="node-sub">${type}</span></div><span aria-hidden="true">↗</span></button>`;
+  const citation=(id,label)=>`<button type="button" class="citation" data-source="${id}">${label} ↗</button>`;
+  function releaseDownload(){if(downloadUrl){URL.revokeObjectURL(downloadUrl);downloadUrl=null;}}
+  function showDetail(title,meta,body,label='SAMPLE SOURCE'){
+    document.getElementById('source-title').textContent=title;
+    document.getElementById('source-meta').textContent=meta;
+    document.getElementById('source-excerpt').textContent=body;
+    document.getElementById('dialog-label').textContent=label;
     dialog.showModal();
   }
-  document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>{scene=button.dataset.scene;render();announce(`${button.innerText.replace(/\s+/g,' ')} selected.`);}));
-  document.getElementById('reset').addEventListener('click',()=>{scene='research';sourceId='pilot';cardCreated=false;question='findings';workflow=initialWorkflow();render();announce('All demo scenes reset. Research scene selected.');});
+  function openSource(id){const source=sources[id];if(source)showDetail(source.title,source.type+' · FICTIONAL',source.excerpt);}
+  function researchView(){
+    return `<div class="canvas"><div class="canvas-head"><h2>Give your research a structure.</h2><span>SOURCE → KNOWLEDGE</span></div><div class="flow">${wires(cardCreated)}<div class="input-stack">${sourceNode('pilot','Pilot note','OBSERVATION')}${sourceNode('review','Review memo','NEXT STEPS')}<p class="stack-caption">CLICK A SOURCE TO EXPLORE ↗</p></div>${hub(false)}<div class="output-wrap"><section class="result-card ${cardCreated?'arrive':'result-ghost'}" aria-label="Knowledge card"><div class="result-label"><span>KNOWLEDGE CARD</span><span aria-hidden="true">${cardCreated?'✓':'⌁'}</span></div>${cardCreated?`<h3>Support assistant pilot</h3><ul class="result-lines"><li><span>↳</span>Routine drafts show promise.</li><li><span>↳</span>Exceptions need human review.</li><li><span>↳</span>A controlled test comes next.</li></ul><div class="result-tags"><span>Human review</span><span>2 sources</span><span>AI draft · sample</span></div>`:`<h3>Your next useful insight.</h3><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div><div class="result-tags"><span>Findings</span><span>Sources</span><span>Limits</span></div>`}</section></div></div><div class="canvas-actions"><button type="button" class="action" data-action="card">${cardCreated?'Replay':'Organize these sources'} <span aria-hidden="true">${cardCreated?'↺':'↗'}</span></button>${cardCreated?'<button type="button" class="text-button" data-detail="card">View evidence & limits ↗</button>':''}</div><p class="tiny-note">A prewritten example of research organization.</p></div>`;
+  }
+  function knowledgeView(){
+    const a=getAnswer(question);
+    const short={findings:['What did the pilot show?','Promising drafts.<br>Human review required.','Routine cases looked useful. Exceptions needed correction.'],rollout:['What should happen next?','Test first.<br>Review before expanding.','Use a baseline, log corrections and keep replies human-reviewed.'],retention:['Did retention improve?','A good question.<br>Missing evidence.','The sample sources did not measure retention.']}[question];
+    return `<div class="canvas"><div class="canvas-head"><h2>Follow the answer to its source.</h2><span>QUESTION → EVIDENCE</span></div><div class="query-row" aria-label="Example questions">${[['findings','Pilot findings'],['rollout','Next step'],['retention','Retention impact']].map(([id,label])=>`<button type="button" class="query-chip ${id===question?'selected':''}" data-question="${id}" aria-pressed="${id===question}">${label}</button>`).join('')}</div><div class="flow knowledge-flow">${wires(a.supported)}<div class="question-node"><span class="node-sub">YOU ASK</span><div class="quote" aria-hidden="true">“</div><h3>${short[0]}</h3></div>${hub(true)}<section class="result-card answer-card arrive ${a.supported?'':'gap-card'}" aria-label="Sample answer"><div class="result-label"><span>${a.supported?'GROUNDED IN SAMPLE SOURCES':'EVIDENCE GAP'}</span><span aria-hidden="true">${a.supported?'✧':'?'}</span></div><h3>${short[1]}</h3><p>${short[2]}</p><div class="citations">${a.sources.map(id=>citation(id,id==='pilot'?'01 Pilot':'02 Review')).join('')}<button type="button" class="answer-detail" data-detail="answer">${a.supported?'Read more':'What’s missing?'} ↗</button></div></section></div></div>`;
+  }
+  function workflowView(){
+    releaseDownload();if(workflow.approved)downloadUrl=URL.createObjectURL(new Blob([makeBrief(workflow)],{type:'text/plain;charset=utf-8'}));
+    return `<div class="canvas"><div class="canvas-head"><h2>Make the next step actionable.</h2><span>REQUEST → REVIEW → BRIEF</span></div><div class="workflow-layout"><div class="workflow-track" aria-label="Workflow progress"><div class="step-node ${workflow.drafted?'done':'active'}"><span class="step-number">${workflow.drafted?'✓':'01'}</span><div><strong>Frame the task</strong><small>Plan a support-assistant test</small></div></div><div class="step-node ${workflow.sources&&workflow.limits?'done':workflow.drafted?'active':''}"><span class="step-number">${workflow.sources&&workflow.limits?'✓':'02'}</span><div><strong>Check the evidence</strong><small>Sources and limitations</small></div></div><div class="step-node ${workflow.approved?'done':workflow.sources&&workflow.limits?'active':''}"><span class="step-number">${workflow.approved?'✓':'03'}</span><div><strong>Create a brief</strong><small>A reviewed next step</small></div></div></div><div class="output-wrap"><section class="result-card brief-card ${workflow.drafted?'arrive':'result-ghost'}" aria-label="Sample brief"><div class="result-label"><span>${workflow.approved?'REVIEWED SAMPLE':'WORKFLOW BRIEF'}</span><span aria-hidden="true">${workflow.approved?'✓':'↳'}</span></div><h3>A focused follow-up test.</h3>${workflow.drafted?`<ul class="brief-lines"><li>Define routine categories</li><li>Compare against a baseline</li><li>Keep human review</li></ul><div class="review-items"><div class="review-row"><label><input type="checkbox" data-review="sources" ${workflow.sources?'checked':''}>Sources reviewed</label><button type="button" class="review-link" data-detail="sources" aria-label="Read sources">Read</button></div><div class="review-row"><label><input type="checkbox" data-review="limits" ${workflow.limits?'checked':''}>Limits understood</label><button type="button" class="review-link" data-detail="limits" aria-label="Read limitations">Read</button></div></div>${workflow.approved?`<a class="download-link" href="${downloadUrl}" download="jimmyai-sample-brief.txt">Download sample brief <span aria-hidden="true">↓</span></a>`:`<button type="button" class="action" data-action="approve" ${!workflow.sources||!workflow.limits?'disabled':''}>Generate brief <span aria-hidden="true">↗</span></button>`}`:`<div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div><div class="result-tags"><span>Scope</span><span>Evidence</span><span>Next steps</span></div>`}</section></div></div>${!workflow.drafted?'<div class="canvas-actions"><button type="button" class="action" data-action="draft">Build a sample plan <span aria-hidden="true">↗</span></button></div>':''}<p class="tiny-note">${workflow.approved?'Sample brief ready. Nothing has been sent or executed.':'A simulated workflow. You review before generating.'}</p></div>`;
+  }
+  function render(){
+    if(scene!=='workflow')releaseDownload();
+    document.querySelectorAll('[data-scene]').forEach(b=>{const active=b.dataset.scene===scene;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
+    content.innerHTML=scene==='research'?researchView():scene==='knowledge'?knowledgeView():workflowView();
+  }
+  function focusSame(selector){content.querySelector(selector)?.focus({preventScroll:true});}
+  function detail(type){
+    if(type==='card')showDetail('What supports this card?','2 FICTIONAL SOURCES · AI DRAFT',getCard('pilot').finding+' '+getCard('review').finding+' Limit: '+getCard('pilot').limitations,'EVIDENCE & LIMITS');
+    if(type==='answer'){const a=getAnswer(question);showDetail(a.title,'PREWRITTEN SAMPLE RESPONSE',a.text+' '+a.interpretation,'ANSWER DETAIL');}
+    if(type==='sources')showDetail('Two notes. One proposed test.','FICTIONAL SAMPLE SOURCES',sources.pilot.excerpt+'\n\n'+sources.review.excerpt);
+    if(type==='limits')showDetail('A proposal, not a proven outcome.','REVIEW BEFORE PROCEEDING',getCard('pilot').limitations+' '+getCard('review').limitations,'EVIDENCE LIMITS');
+  }
+  document.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>{scene=b.dataset.scene;render();announce(`${b.innerText} scene selected.`);}));
+  document.getElementById('reset').addEventListener('click',()=>{scene='research';cardCreated=false;question='findings';workflow=initialWorkflow();render();announce('Demo reset. Organize scene selected.');});
+  document.getElementById('about-demo').addEventListener('click',()=>showDetail('Explore an idea, interactively.','JIMMYAI · PORTFOLIO DEMONSTRATION','Three curated scenes show how research can become reusable knowledge, answers can retain their sources, and a request can become a reviewable plan. All documents and outputs are fictional and prewritten. This page does not call an AI service, access private knowledge or execute real tasks.','ABOUT THIS DEMO'));
   document.getElementById('close-source').addEventListener('click',()=>dialog.close());
-  content.addEventListener('click',event=>{
-    const button=event.target.closest('button');if(!button)return;
-    if(button.dataset.source){openSource(button.dataset.source);return;}
-    if(button.dataset.document){sourceId=button.dataset.document;cardCreated=false;render();focusSame(`[data-document="${sourceId}"]`);announce('Sample source changed. Create a card to explore it.');return;}
-    if(button.dataset.question){question=button.dataset.question;render();focusSame(`[data-question="${question}"]`);announce(getAnswer(question).title);return;}
-    const action=button.dataset.action;
-    if(action==='card'){cardCreated=true;render();focusSame('[data-action="card"]');announce('Knowledge card created. Source, findings and limitations are ready to review.');}
-    if(action==='draft'){workflow=transition(workflow,{type:'draft'});render();focusSame('[data-review="sources"]');announce('Four proposed tasks prepared. Review both items to continue.');}
-    if(action==='approve'){workflow=transition(workflow,{type:'approve'});render();focusSame('.download-link');announce('Sample brief ready to download.');}
+  content.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.source){openSource(b.dataset.source);return;}
+    if(b.dataset.detail){detail(b.dataset.detail);return;}
+    if(b.dataset.question){question=b.dataset.question;render();focusSame(`[data-question="${question}"]`);announce(getAnswer(question).title);return;}
+    if(b.dataset.action==='card'){cardCreated=true;render();focusSame('[data-action="card"]');announce('Sample knowledge card organized. View evidence and limits for details.');}
+    if(b.dataset.action==='draft'){workflow=transition(workflow,{type:'draft'});render();focusSame('[data-review="sources"]');announce('Sample plan ready. Review the sources and limitations.');}
+    if(b.dataset.action==='approve'){workflow=transition(workflow,{type:'approve'});render();focusSame('.download-link');announce('Reviewed sample brief ready to download.');}
   });
-  content.addEventListener('change',event=>{
-    const key=event.target.dataset.review;if(!key)return;
-    workflow=transition(workflow,{type:'review',key,checked:event.target.checked});render();focusSame(`[data-review="${key}"]`);announce(workflow.sources&&workflow.limits?'Both review items checked. You can generate the brief.':'Complete both review items to continue.');
-  });
+  content.addEventListener('change',e=>{const key=e.target.dataset.review;if(!key)return;workflow=transition(workflow,{type:'review',key,checked:e.target.checked});render();focusSame(`[data-review="${key}"]`);announce(workflow.sources&&workflow.limits?'Both items reviewed. Generate your sample brief.':'Review both items to continue.');});
   window.addEventListener('pagehide',releaseDownload);
   window.addEventListener('pageshow',event=>{if(event.persisted)render();});
   render();

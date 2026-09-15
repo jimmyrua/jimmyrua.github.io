@@ -2,32 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Explore JimmyAI through an interactive walkthrough of research organization, source-backed answers and reviewable workflows.">
+  <meta name="description" content="An interactive look at JimmyAI: organize research, connect evidence and build reviewable workflows.">
   <title>JimmyAI — Interactive Project | Suyu (Jimmy) Wang</title>
   <link rel="stylesheet" href="assets/jimmyai.css"><script src="assets/jimmyai.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="header"><nav class="wrap nav" aria-label="Main navigation"><a class="wordmark" href="index.html" aria-label="Suyu Wang home">SW<span>.</span></a><a class="back" href="index.html#projects">↖ All projects</a><a class="nav-contact" href="index.html#contact">Contact</a></nav></header>
-  <main id="main">
-    <section class="wrap hero" aria-labelledby="title">
-      <div class="hero-main"><p class="eyebrow">AI · KNOWLEDGE &amp; WORKFLOW</p><h1 id="title">JimmyAI<span>.</span></h1><h2>From scattered inputs<br>to work you can <em>review.</em></h2><p class="intro">A personal AI workspace for organizing research, finding answers with evidence, and turning an open question into a structured next step.</p><a class="primary" href="#workspace">Try the workspace <span aria-hidden="true">↘</span></a></div>
-      <aside class="hero-note"><span class="note-index">PROJECT EXPLORER / 01</span><div class="orbit" aria-hidden="true"><span class="orbit-tag tag-one">SOURCE</span><span class="orbit-tag tag-two">CONTEXT</span><span class="orbit-tag tag-three">ACTION</span><span class="core">J<span>✦</span></span></div><p>Read. Connect. Follow through.</p><span class="note-detail">Three interactive scenes.<br>One connected way of working.</span></aside>
+  <header class="header"><nav class="wrap nav" aria-label="Main navigation"><a class="wordmark" href="index.html" aria-label="Suyu Wang home">SW<span>.</span></a><a class="back" href="index.html#projects">↖ All projects</a><a class="nav-contact" href="index.html#contact">Contact ↗</a></nav></header>
+  <main id="main" class="wrap">
+    <section class="hero" aria-labelledby="title"><div><p class="eyebrow">01 / AI KNOWLEDGE WORKSPACE</p><h1 id="title">JimmyAI<span>✦</span><em>Knowledge, connected.</em></h1></div><p class="intro">From a source to a useful next step.<br>Explore how it works.</p></section>
+    <section class="explorer" aria-label="Interactive JimmyAI demo">
+      <div class="explorer-bar"><nav class="scenes" aria-label="Demo scenarios"><button type="button" class="scene active" data-scene="research" aria-pressed="true"><span>01</span> Organize</button><button type="button" class="scene" data-scene="knowledge" aria-pressed="false"><span>02</span> Connect</button><button type="button" class="scene" data-scene="workflow" aria-pressed="false"><span>03</span> Build</button></nav><button type="button" id="reset" class="reset" aria-label="Reset demo">↺ <span>Reset</span></button></div>
+      <div id="scene-content"></div><p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
+      <div class="explorer-bottom"><span><i class="status-dot"></i> Interactive concept <span class="divider">/</span> Fictional sample data</span><button type="button" id="about-demo">About this demo ↗</button></div>
+      <noscript><p class="noscript">Enable JavaScript to explore the three sample workflows. This is a fictional, prewritten demonstration.</p></noscript>
     </section>
-    <section id="workspace" class="workspace-section" aria-labelledby="workspace-title">
-      <div class="wrap"><div class="section-heading"><div><p class="eyebrow">EXPERIENCE THE IDEA</p><h2 id="workspace-title">A little less explaining.<br><em>A little more exploring.</em></h2></div><p class="demo-note"><span class="dot"></span> Curated interactive demo<br><span>Fictional sample data · Prewritten outputs<br>No live AI or private knowledge access</span></p></div>
-      <noscript><p class="no-script">This walkthrough needs JavaScript. It demonstrates research organization, answers with source excerpts, and a review step before exporting a brief. All examples are fictional.</p></noscript>
-      <div class="workbench">
-        <aside class="sidebar"><div class="workspace-brand"><span class="mini-j">J</span><div>JimmyAI<small>Sample workspace</small></div></div><p class="sidebar-label">EXPLORE A CAPABILITY</p><nav class="scenes" aria-label="Demo scenarios"><button type="button" class="scene active" data-scene="research" aria-pressed="true"><span>01</span><div>Research to knowledge<small>Make a source reusable</small></div><b aria-hidden="true">↗</b></button><button type="button" class="scene" data-scene="knowledge" aria-pressed="false"><span>02</span><div>Answers with evidence<small>Follow the reasoning</small></div><b aria-hidden="true">↗</b></button><button type="button" class="scene" data-scene="workflow" aria-pressed="false"><span>03</span><div>Question to workflow<small>Keep the next step reviewable</small></div><b aria-hidden="true">↗</b></button></nav><div class="sidebar-bottom"><span class="dot"></span> Built for human judgment<p>Organize the evidence.<br>Keep the decision with you.</p></div></aside>
-        <div class="workspace-body"><div class="workspace-topbar"><span id="breadcrumb">Workspace / Research</span><button type="button" id="reset" class="quiet">Reset demo <span aria-hidden="true">↺</span></button></div><div id="scene-content"></div><p id="announcement" class="sr-only" role="status" aria-live="polite"></p></div>
-      </div>
-      <p class="workspace-caption">An illustrative interface for this portfolio. The examples demonstrate JimmyAI workflows; they are not a connection to the underlying system.</p>
-      </div>
-    </section>
-    <section class="wrap rationale" aria-labelledby="rationale-title"><div><p class="eyebrow">BEHIND THE PROJECT</p><h2 id="rationale-title">Useful knowledge<br>needs <em>structure.</em></h2></div><div class="rationale-copy"><p>Research often ends up scattered across documents, notes and conversations. JimmyAI brings structure to that work: retain the source, organize what matters, and make the next action explicit.</p><div class="principles"><article><span>01 / TRACEABILITY</span><h3>A conclusion needs a source.</h3><p>Keep findings connected to the material behind them, with limitations visible.</p></article><article><span>02 / REUSABILITY</span><h3>A document can become a tool.</h3><p>Organize research into cards and tags that support later retrieval and comparison.</p></article><article><span>03 / REVIEW</span><h3>Progress stays inspectable.</h3><p>Separate the proposed work, the supporting evidence and the decision to proceed.</p></article></div></div></section>
-    <section class="project-footer"><div class="wrap footer-inner"><div><p class="eyebrow">CONTINUE EXPLORING</p><h2>Business questions.<br><em>Practical applications.</em></h2></div><a class="primary" href="index.html#projects">Back to selected work <span aria-hidden="true">↗</span></a></div></section>
+    <footer class="page-footer"><span>Designed for research. Built around evidence.</span><a href="index.html#contact">Let’s connect <span aria-hidden="true">↗</span></a></footer>
   </main>
-  <footer class="wrap small-footer"><span>Suyu (Jimmy) Wang</span><span>Business Analytics &amp; AI</span></footer>
-  <dialog id="source-dialog" aria-labelledby="source-title"><div class="dialog-top"><span class="eyebrow">SOURCE EXCERPT</span><button class="quiet" type="button" id="close-source" aria-label="Close source excerpt">Close ×</button></div><span class="sample-label">Fictional example</span><h2 id="source-title"></h2><p id="source-meta"></p><blockquote id="source-excerpt"></blockquote><p class="dialog-footnote">Written for this demonstration. This is not a published study or a real project result.</p></dialog>
+  <dialog id="source-dialog" aria-labelledby="source-title"><div class="dialog-top"><span class="eyebrow" id="dialog-label">SAMPLE SOURCE</span><button type="button" id="close-source" aria-label="Close details">Close ×</button></div><h2 id="source-title"></h2><p id="source-meta"></p><blockquote id="source-excerpt"></blockquote><p class="dialog-note">Illustrative portfolio content. No live AI or private knowledge access.</p></dialog>
 </body>
 </html>
