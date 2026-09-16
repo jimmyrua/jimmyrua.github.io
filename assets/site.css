@@ -18,3 +18,5 @@
 
 /* The fifth case study carries a warm commodity-research accent. */
 .cocoa-card{border-color:#936542}.cocoa-card:hover{border-color:#e3ae78}.cocoa-card .project-category,.cocoa-card .project-primary span{color:#efbf8c}.cocoa-card .project-tags li{color:#efd0ad;border-color:#8d725b}
+
+.genai-card{border-color:#73a998}.genai-card:hover{border-color:#a4ddc5}.genai-card .project-category,.genai-card .project-primary span{color:#abe2ca}.genai-card .project-tags li{color:#c3e6d7;border-color:#688f80}
