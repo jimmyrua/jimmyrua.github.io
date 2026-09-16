@@ -13,3 +13,52 @@
 .jimmy-workspace .project-overview h2{color:#9bc5ff}
 .jimmy-workspace .project-overview p{color:#d4e2f7}
 @media(max-width:760px){.project-overview{grid-template-columns:1fr;gap:11px;padding:21px 0 24px;margin-bottom:23px}.project-overview p{font-size:16px;line-height:1.8}}
+
+/* High-visibility navigation back to the portfolio. */
+body header a.project-return{display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:48px;padding:8px 19px 8px 10px;border:1px solid transparent;border-radius:10px;background:#175c45;color:#fff;font-size:15px;font-weight:700;line-height:1.2;white-space:nowrap;box-shadow:0 4px 12px #143e3020;transition:transform .18s,box-shadow .18s}
+body header a.project-return span{display:grid;place-items:center;width:30px;height:30px;border-radius:6px;background:#ffffff24;font-size:22px;font-weight:400}
+body header a.project-return:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 6px 16px #143e3030}
+body header a.project-return:focus-visible{outline:3px solid #c06416;outline-offset:4px}
+body.jimmy-workspace header a.project-return{background:#2465de;color:#fff;border-color:#6da7ff;box-shadow:0 4px 18px #2465de35}
+@media(max-width:760px){body header a.project-return{min-height:44px;font-size:13px;padding:6px 12px 6px 7px;gap:7px}body header a.project-return span{width:28px;height:28px;font-size:20px}}
+@media(prefers-reduced-motion:reduce){body header a.project-return{transition:none}body header a.project-return:hover{transform:none}}
+
+body header a.project-return{background:#a63f28;box-shadow:0 4px 12px #a63f2825}
+
+/* Toronto: a distinct urban research atlas in plum, lavender and amber. */
+:root{--ink:#302345;--muted:#625770;--paper:#f3f0f8;--line:#cdc4dc;--rust:#794215}
+body{background:radial-gradient(ellipse at 10% 0%,#e5dcf4,transparent 55%),var(--paper);color:var(--ink)}
+header{border-bottom:2px solid #483060;min-height:90px}
+.wordmark span{color:#995410}
+body header a.project-return{background:#6437a0;color:#fff;box-shadow:0 4px 14px #6437a030}
+body header a.project-return:focus-visible{outline-color:#96520b}
+.intro{padding:48px 0 37px}
+h1{font-weight:650;color:#302345}
+h1 em{color:#71419b}
+.eyebrow{color:#754011;font-weight:700}
+.intro-note{border-left:3px solid #b77a24;padding-left:21px}
+.intro-note p{color:#3c2955}.intro-note>span{color:#665673}
+.project-overview{border-color:#b9aacb}.project-overview h2{color:#684287}.project-overview p{color:#463b54}
+.atlas{border:1px solid #ad9bbe;border-radius:16px;background:#fff;box-shadow:0 20px 55px #41275d13}
+.toolbar{background:#e6deef;border-color:#baaaca;padding:16px 20px}
+.layers button{color:#463153;font-weight:600}
+.layers button.active{background:#583084;border-color:#583084;color:#fff;box-shadow:0 3px 9px #58308425}
+.toolbar>button{background:#fff;color:#4b315f;border-color:#b7a5c8}
+.map-column{background:radial-gradient(ellipse at 45% 40%,#fff,#eae5f1 85%)}
+.map-topline{color:#564760}.map-caption{color:#665773}
+.compass{fill:#665079}.lake{fill:#82738d}
+.legend{background:#e8e0f0;border-color:#c1b2cf}.legend p{color:#594b66}
+.detail{background:#fff;border-color:#bbaaCA;border-top:4px solid #704197}
+.select-row label,.muted,.selection-state{color:#625270}
+.select-row select{background:#f8f5fc;border-color:#aa96bc;color:#302345}
+.detail h2{color:#402453;font-weight:600}
+.priority-head>span:first-child{background:#f8dfaa;color:#6b3b0f}
+.metrics{border-color:#d8cde2}.metrics strong{color:#41245c}.metrics span,.metrics small,.detail-note{color:#625270}
+.track{background:#eae2f1}.track i{background:#71419b}.component:nth-child(2) .track i{background:#50726f}.component:nth-child(3) .track i{background:#a86b13}
+.atlas-bottom{background:#f3edf8;color:#5c4a6b;border-color:#c9b9d8}
+.planning{margin:34px 0 26px;padding:30px;border:1px solid #d0c1dd;border-radius:14px;background:#fffcf7;gap:70px}
+.planning h2{color:#44255c}.ranking-head{border-color:#baacc8}.rank-button>span:first-child{color:#805020}.rank-button small{color:#63576b}
+button:hover{background:#e9e0f2}
+footer{border-color:#c2b1d1;color:#625270}
+dialog{background:#fffcff;border-color:#ad96c1;color:#302345}dialog::backdrop{background:#26153699}
+@media(max-width:760px){header{min-height:80px;gap:10px}.intro{padding:30px 0}.intro-note{padding-left:14px}.toolbar{padding:11px}.planning{padding:23px 17px;gap:32px;margin-top:25px}.detail{border-top:4px solid #704197}}

@@ -116,3 +116,12 @@
 .jimmy-workspace .project-overview h2{color:#9bc5ff}
 .jimmy-workspace .project-overview p{color:#d4e2f7}
 @media(max-width:760px){.project-overview{grid-template-columns:1fr;gap:11px;padding:21px 0 24px;margin-bottom:23px}.project-overview p{font-size:16px;line-height:1.8}}
+
+/* High-visibility navigation back to the portfolio. */
+body .header a.project-return{display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:48px;padding:8px 19px 8px 10px;border:1px solid transparent;border-radius:10px;background:#175c45;color:#fff;font-size:15px;font-weight:700;line-height:1.2;white-space:nowrap;box-shadow:0 4px 12px #143e3020;transition:transform .18s,box-shadow .18s}
+body .header a.project-return span{display:grid;place-items:center;width:30px;height:30px;border-radius:6px;background:#ffffff24;font-size:22px;font-weight:400}
+body .header a.project-return:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 6px 16px #143e3030}
+body .header a.project-return:focus-visible{outline:3px solid #c06416;outline-offset:4px}
+body.jimmy-workspace header a.project-return{background:#2465de;color:#fff;border-color:#6da7ff;box-shadow:0 4px 18px #2465de35}
+@media(max-width:760px){body .header a.project-return{min-height:44px;font-size:13px;padding:6px 12px 6px 7px;gap:7px}body .header a.project-return span{width:28px;height:28px;font-size:20px}}
+@media(prefers-reduced-motion:reduce){body .header a.project-return{transition:none}body .header a.project-return:hover{transform:none}}
