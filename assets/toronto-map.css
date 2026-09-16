@@ -4,3 +4,12 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
 
 .map-stage{user-select:none}@media(max-width:760px){.compass,.lake{display:none}}
+
+/* A concise project introduction before each case study or demo. */
+.project-overview{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:24px 0 30px;margin:0 0 26px;border-top:1px solid #a9b9af;border-bottom:1px solid #a9b9af}
+.project-overview h2{font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;line-height:1.8;color:#365849;margin:3px 0 0}
+.project-overview p{font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:1.85;color:#2c4855;max-width:850px;margin:0}
+.jimmy-workspace .project-overview{border-color:#395375}
+.jimmy-workspace .project-overview h2{color:#9bc5ff}
+.jimmy-workspace .project-overview p{color:#d4e2f7}
+@media(max-width:760px){.project-overview{grid-template-columns:1fr;gap:11px;padding:21px 0 24px;margin-bottom:23px}.project-overview p{font-size:16px;line-height:1.8}}
